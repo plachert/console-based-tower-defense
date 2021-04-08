@@ -1,0 +1,5 @@
+
+class Tower:
+
+    marker="T"
+
