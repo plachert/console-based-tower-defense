@@ -6,7 +6,7 @@ class Monster:
 
 class SlowMonster(Monster):
     marker = "S"
-    update_move = 10 # speed
+    update_move = 3 # speed
 
 class FastMonster(Monster):
     marker = "F"

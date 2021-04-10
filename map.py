@@ -3,7 +3,7 @@ from towers import Tower
 from monsters import SlowMonster, FastMonster, Monster
 from typing import Tuple
 from time import sleep
-import sys
+import reprint
 
 class Map:
     ROWS=9
@@ -59,6 +59,28 @@ class Map:
             row += 1
         build_path_block(row, col)
 
+    def get_rows(self):
+        map_rows = []
+        for row in range(self.ROWS):
+            row_str = []
+            for col in range(self.COLUMNS):
+                if (row, col) in self.wall.keys():
+                    val = self.wall[(row, col)]
+                    if val is None:
+                        row_str.append("#")
+                    else:
+                        tower_marker = val.marker
+                        row_str.append(tower_marker)
+                else:
+                    val = self.path[(row, col)]
+                    if val:
+                        monster_marker = val[0].marker  # monsters can populate the same path block. Show one of them
+                        row_str.append(monster_marker)
+                    else:
+                        row_str.append(" ")
+            map_rows.append(row_str)
+        return map_rows
+
     def __str__(self):
         map_string = []
         for row in range(self.ROWS):
@@ -88,11 +110,15 @@ class Simulation:
         self.timestep = 0
 
     def run(self):
-        while True:
-            self.timestep += 1
-            self.update()
-            sleep(1)
-            print(self.map)
+        with reprint.output(output_type="dict", interval=0) as output_dict:
+            while True:
+                self.timestep += 1
+                self.update()
+                rows = self.map.get_rows()
+                for i, row in enumerate(rows):
+                    output_dict[i] = "{}".format("".join(row))
+                sleep(0.1)
+
 
     def update(self):
         updated_monsters = []
