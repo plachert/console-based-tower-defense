@@ -1,48 +1,40 @@
 from collections import OrderedDict
-from towers import Tower
-from monsters import SlowMonster, FastMonster, Monster
+from towers.towers import Tower
+from waves.monsters import SlowMonster, FastMonster, Monster
 from typing import Tuple
 from time import sleep
 import reprint
+from fields.field import PathField, WallField
 
 class Map:
     ROWS=9
-    COLUMNS=21
+    COLUMNS=41
 
     def __init__(self):
         self.path = OrderedDict()
         self.wall = OrderedDict()
-        for row_idx in range(self.ROWS):
-            for col_idx in range(self.COLUMNS):
-                self.wall[(row_idx, col_idx)] = None
+        for row in range(self.ROWS):
+            for col in range(self.COLUMNS):
+                self.wall[(row, col)] = WallField(row, col)
         self._create_path()
         self.path_order = list(self.path.keys())
         self.monsters = []
 
     def build_tower(self, tower: Tower, position: Tuple[int, int]):
-        empty = self.get_empty_wall_blocks()
-        if position in empty:
-            self.wall[position] = tower
+        self.wall[position].add_object(tower)
 
     def populate_field(self, monster: Monster, position: Tuple[int, int]):
-        if self.path[position] is None:
-            self.path[position] = [monster]
-        else:
-            self.path[position].append(monster)
+        self.path[position].add_object(monster)
 
     def depopulate_field(self, monster: Monster, position: Tuple[int, int]):
-        return self.path[position].remove(monster)
+        self.path[position].remove_object(monster)
 
     def add_monster(self, monster: Monster):
-        self.populate_field(monster, position=self.path_order[0])
-
-    def get_empty_wall_blocks(self):
-        empty = [key for key, val in self.wall.items() if key is not None]
-        return empty
+        self.path[self.path_order[0]].add_object(monster)
 
     def _create_path(self):
         def build_path_block(row, col):
-            self.path[(row, col)] = None
+            self.path[(row, col)] = PathField(row, col)
             self.wall.pop((row, col))
         row = 0
         col = self.COLUMNS - 2
@@ -66,18 +58,9 @@ class Map:
             for col in range(self.COLUMNS):
                 if (row, col) in self.wall.keys():
                     val = self.wall[(row, col)]
-                    if val is None:
-                        row_str.append("#")
-                    else:
-                        tower_marker = val.marker
-                        row_str.append(tower_marker)
                 else:
                     val = self.path[(row, col)]
-                    if val:
-                        monster_marker = val[0].marker  # monsters can populate the same path block. Show one of them
-                        row_str.append(monster_marker)
-                    else:
-                        row_str.append(" ")
+                row_str.append(val.__str__())
             map_rows.append(row_str)
         return map_rows
 
@@ -87,18 +70,9 @@ class Map:
             for col in range(self.COLUMNS):
                 if (row, col) in self.wall.keys():
                     val = self.wall[(row, col)]
-                    if val is None:
-                        map_string.append("#")
-                    else:
-                        tower_marker = val.marker
-                        map_string.append(tower_marker)
                 else:
                     val = self.path[(row, col)]
-                    if val:
-                        monster_marker = val[0].marker  # monsters can populate the same path block. Show one of them
-                        map_string.append(monster_marker)
-                    else:
-                        map_string.append(" ")
+                map_string.append(val.__str__())
             map_string.append("\n")
         return "".join(map_string)
 
@@ -123,7 +97,7 @@ class Simulation:
     def update(self):
         updated_monsters = []
         for i, pos in enumerate(self.map.path_order):
-            objects = self.map.path[pos]
+            objects = self.map.path[pos].objects
             if objects:
                 for monster in objects:
                     if monster in updated_monsters:
@@ -152,6 +126,5 @@ if __name__ == '__main__':
     map.build_tower(tower, (2, 7))
     map.add_monster(monster1)
     map.add_monster(monster2)
-
     simulation = Simulation(map)
     simulation.run()
