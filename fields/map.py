@@ -22,6 +22,10 @@ class Map:
 
     def build_tower(self, tower: Tower, position: Tuple[int, int]):
         self.wall[position].add_object(tower)
+        for pos in self.path_order:
+            field = self.path[pos]
+            if field.taxi_distance(self.wall[position]) <= 2:
+                field.add_observer(self.wall[position])
 
     def populate_field(self, monster: Monster, position: Tuple[int, int]):
         self.path[position].add_object(monster)
@@ -99,7 +103,11 @@ class Simulation:
         for i, pos in enumerate(self.map.path_order):
             objects = self.map.path[pos].objects
             if objects:
+                self.map.path[pos].notify_observers()
                 for monster in objects:
+                    if not monster.is_alive:
+                        self.map.depopulate_field(monster, pos)
+                        continue
                     if monster in updated_monsters:
                         continue
                     if not self.timestep % monster.update_move:
@@ -122,8 +130,8 @@ if __name__ == '__main__':
     tower = Tower()
     monster1 = SlowMonster()
     monster2 = FastMonster()
-    map.build_tower(tower, (0, 7))
-    map.build_tower(tower, (2, 7))
+    # map.build_tower(tower, (0, 7))
+    map.build_tower(tower, (2, 2))
     map.add_monster(monster1)
     map.add_monster(monster2)
     simulation = Simulation(map)

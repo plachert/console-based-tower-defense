@@ -1,5 +1,6 @@
 from towers.towers import Tower
 from waves.monsters import Monster
+from typing import List
 
 class Field:
 
@@ -29,6 +30,10 @@ class Field:
 class WallField(Field):
     marker = '#'
 
+    def attack(self, monsters: List[Monster]):
+        for monster in monsters:
+            self.objects[0].attack(monster)
+
     def add_object(self, object: Tower):
         if self.objects:
             raise ValueError("Field occupied")
@@ -37,6 +42,17 @@ class WallField(Field):
 
 class PathField(Field):
     marker = '.'
+
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.observers = []
+
+    def add_observer(self, observer: WallField):
+        self.observers.append(observer)
+
+    def notify_observers(self):
+        for observer in self.observers:
+            observer.attack(self.objects)
 
     def add_object(self, object: Monster):
         self.objects.append(object)
