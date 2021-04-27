@@ -14,8 +14,8 @@ class Tower:
         if self.ready:
             print("attack")
             monster.hp -= self.force
-            if monster.hp <=0:
-                monster.is_alive = False
+            if monster.hp <= 0:
+                monster.berry_me()
             self.ready = False
 
     def update(self):

@@ -1,6 +1,6 @@
 from collections import OrderedDict
-from towers.towers import Tower
-from waves.monsters import SlowMonster, FastMonster, Monster
+from towers.tower import Tower
+from waves.monsters import SlowMonster, FastMonster, Monster, PassedTheGateError
 from typing import Tuple
 from time import sleep
 import reprint
@@ -27,14 +27,12 @@ class Map:
             if field.taxi_distance(self.wall[position]) <= 2:
                 field.add_observer(self.wall[position])
 
-    def populate_field(self, monster: Monster, position: Tuple[int, int]):
-        self.path[position].add_object(monster)
-
-    def depopulate_field(self, monster: Monster, position: Tuple[int, int]):
-        self.path[position].remove_object(monster)
-
     def add_monster(self, monster: Monster):
-        self.path[self.path_order[0]].add_object(monster)
+        monster.put_on_path(self.path)
+        self.monsters.append(monster)
+
+    def remove_monster(self, monster: Monster):
+        self.monsters.remove(monster)
 
     def _create_path(self):
         def build_path_block(row, col):
@@ -99,34 +97,21 @@ class Simulation:
 
 
     def update(self):
-        updated_monsters = []
         for _, field in self.map.wall.items():
             if field.objects:
                 tower = field.objects[0]
                 tower.update()
-        for i, pos in enumerate(self.map.path_order):
-            objects = self.map.path[pos].objects
-            if objects:
-                self.map.path[pos].notify_observers()
-                for monster in objects:
-                    if not monster.is_alive:
-                        self.map.depopulate_field(monster, pos)
-                        continue
-                    if monster in updated_monsters:
-                        continue
-                    if not self.timestep % monster.update_move:
-                        self.map.depopulate_field(monster, pos)
-                        try:
-                            next_field = self.map.path_order[i + 1]
-                            self.map.populate_field(monster, next_field)
-                        except IndexError:
-                            print("death")
-                        updated_monsters.append(monster)
+        for monster in self.map.monsters:
+            monster.update()
+            if monster.is_alive:
+                try:
+                    monster.move()
+                except PassedTheGateError:
+                    # remove life
+                    self.map.remove_monster(monster)
             else:
-                pass
-
-
-
+                # add points for monster
+                self.map.remove_monster(monster)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from towers.towers import Tower
+from towers.tower import Tower
 from waves.monsters import Monster
 from typing import List
 
