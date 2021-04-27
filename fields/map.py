@@ -1,10 +1,13 @@
 from collections import OrderedDict
+from time import sleep
+from typing import Tuple
+
+import reprint
+
+from fields.field import PathField, WallField
 from towers.tower import Tower
 from waves.monsters import SlowMonster, FastMonster, Monster, PassedTheGateError
-from typing import Tuple
-from time import sleep
-import reprint
-from fields.field import PathField, WallField
+
 
 class Map:
     ROWS=9

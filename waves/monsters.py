@@ -1,5 +1,3 @@
-from typing import Tuple
-# from fields.field import PathField
 
 class PassedTheGateError(Exception):
     pass
