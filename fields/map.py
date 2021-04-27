@@ -100,6 +100,10 @@ class Simulation:
 
     def update(self):
         updated_monsters = []
+        for _, field in self.map.wall.items():
+            if field.objects:
+                tower = field.objects[0]
+                tower.update()
         for i, pos in enumerate(self.map.path_order):
             objects = self.map.path[pos].objects
             if objects:
