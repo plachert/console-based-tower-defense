@@ -7,7 +7,7 @@ import reprint
 from fields.field import PathField, WallField
 from towers.tower import Tower
 from waves.monsters import SlowMonster, FastMonster, Monster, PassedTheGateError
-
+import waves.wave
 
 class Map:
     ROWS=9
@@ -89,10 +89,13 @@ class Simulation:
         self.timestep = 0
 
     def run(self):
+        self.wave = waves.wave.EasyWave()
         with reprint.output(output_type="dict", interval=0) as output_dict:
             while True:
                 self.timestep += 1
                 self.update()
+                self.wave.release(self.map)
+                self.wave.update()
                 rows = self.map.get_rows()
                 for i, row in enumerate(rows):
                     output_dict[i] = "{}".format("".join(row))
@@ -124,7 +127,16 @@ if __name__ == '__main__':
     monster2 = FastMonster()
     # map.build_tower(tower, (0, 7))
     map.build_tower(tower, (2, 2))
-    map.add_monster(monster1)
-    map.add_monster(monster2)
+    map.build_tower(tower, (2, 3))
+    map.build_tower(tower, (2, 4))
+    map.build_tower(tower, (2, 5))
+    map.build_tower(tower, (2, 6))
+    map.build_tower(tower, (2, 7))
+    map.build_tower(tower, (2, 8))
+    map.build_tower(tower, (2, 9))
+    map.build_tower(tower, (2, 10))
+    map.build_tower(tower, (2, 11))
+    # map.add_monster(monster1)
+    # map.add_monster(monster2)
     simulation = Simulation(map)
     simulation.run()

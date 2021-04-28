@@ -12,7 +12,6 @@ class Tower:
 
     def attack(self, monster: Monster):
         if self.ready:
-            print("attack")
             monster.hp -= self.force
             if monster.hp <= 0:
                 monster.berry_me()
