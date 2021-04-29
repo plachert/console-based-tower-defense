@@ -1,5 +1,4 @@
-from fields.map import Map
-from waves.monsters import FastMonster, SlowMonster
+from waves.monsters import FastMonster
 
 class Wave:
 
@@ -12,7 +11,7 @@ class Wave:
     def fill(self):
         raise NotImplementedError
 
-    def release(self, map: Map):
+    def release(self, map):
         if self.lobby and self.ready:
             monster = self.lobby.pop()
             map.add_monster(monster)

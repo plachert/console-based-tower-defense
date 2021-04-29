@@ -47,9 +47,11 @@ class Monster:
 class SlowMonster(Monster):
     marker = "S"
     hp = 10000
+    gold = 100
     move_step = 3 # speed
 
 class FastMonster(Monster):
     marker = "F"
     hp = 20
+    gold = 200
     move_step = 1

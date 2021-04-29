@@ -69,6 +69,49 @@ class Map:
             map_rows.append(row_str)
         return map_rows
 
+    def print_with_monits(self, monits):
+        rows = self.get_rows()
+        for i, monit in enumerate(monits):
+            rows[i].append(f"   {monit}")
+
+        for row in rows:
+            print("".join(row))
+
+
+    # def print_with_extra_info(self, info):
+    #     map_rows = []
+    #     for row in range(self.ROWS):
+    #         row_str = []
+    #         for col in range(self.COLUMNS):
+    #             if (row, col) in self.wall.keys():
+    #                 val = self.wall[(row, col)]
+    #             else:
+    #                 val = self.path[(row, col)]
+    #             row_str.append(val.__str__())
+    #         map_rows.append([str(row) + " "] + row_str)
+    #     first_col_row = ["  "]
+    #     second_col_row = ["  "]
+    #     for col in range(self.COLUMNS):
+    #         if col < 10:
+    #             first_col_row.append(str(col))
+    #             second_col_row.append(" ")
+    #         else:
+    #             first_digit = str(col)[0]
+    #             second_digit = str(col)[1]
+    #             first_col_row.append(first_digit)
+    #             second_col_row.append(second_digit)
+    #     map_rows.append(first_col_row)
+    #     map_rows.append(second_col_row)
+    #     self._print_rows(map_rows)
+
+    # def _print_rows(self, rows):
+    #     flat = []
+    #     for row in rows:
+    #         row.append("\n")
+    #         flat.extend(row)
+    #     print("".join(flat))
+
+
     def __str__(self):
         map_string = []
         for row in range(self.ROWS):
