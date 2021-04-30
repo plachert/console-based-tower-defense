@@ -73,5 +73,3 @@ class Map:
 
         for row in rows:
             print("".join(row))
-
-
