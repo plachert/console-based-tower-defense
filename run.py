@@ -50,6 +50,13 @@ class Game:
         os.system("clear")
 
     def fight(self):
+        def get_current_status():
+            monsters_hp = []
+            for monster in self.map.monsters:
+                monsters_hp.append(str(monster.hp))
+            monsters_hp = " ".join(monsters_hp)
+            return f" Monsters hp: {monsters_hp}"
+
         wave = self.waves.pop(0)
         with reprint.output(output_type="dict", interval=0) as output_dict:
             while True:
@@ -57,6 +64,8 @@ class Game:
                 wave.release(self.map)
                 wave.update()
                 rows = self.map.get_rows()
+                rows[0] += get_current_status()
+                rows[1] += f" Lives: {self.lives}"
                 for i, row in enumerate(rows):
                     output_dict[i] = "{}".format("".join(row))
                 sleep(0.1)
