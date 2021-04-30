@@ -6,6 +6,7 @@ class Monster:
     marker="M"
     move_step=1
     hp=20
+    points=10
     is_alive=True
 
     def __init__(self):

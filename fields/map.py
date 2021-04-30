@@ -1,13 +1,10 @@
 from collections import OrderedDict
-from time import sleep
 from typing import Tuple
-
-import reprint
 
 from fields.field import PathField, WallField
 from towers.tower import Tower
-from waves.monsters import SlowMonster, FastMonster, Monster, PassedTheGateError
-import waves.wave
+from waves.monsters import SlowMonster, FastMonster, Monster
+
 
 class Map:
     ROWS=9
@@ -78,40 +75,6 @@ class Map:
             print("".join(row))
 
 
-    # def print_with_extra_info(self, info):
-    #     map_rows = []
-    #     for row in range(self.ROWS):
-    #         row_str = []
-    #         for col in range(self.COLUMNS):
-    #             if (row, col) in self.wall.keys():
-    #                 val = self.wall[(row, col)]
-    #             else:
-    #                 val = self.path[(row, col)]
-    #             row_str.append(val.__str__())
-    #         map_rows.append([str(row) + " "] + row_str)
-    #     first_col_row = ["  "]
-    #     second_col_row = ["  "]
-    #     for col in range(self.COLUMNS):
-    #         if col < 10:
-    #             first_col_row.append(str(col))
-    #             second_col_row.append(" ")
-    #         else:
-    #             first_digit = str(col)[0]
-    #             second_digit = str(col)[1]
-    #             first_col_row.append(first_digit)
-    #             second_col_row.append(second_digit)
-    #     map_rows.append(first_col_row)
-    #     map_rows.append(second_col_row)
-    #     self._print_rows(map_rows)
-
-    # def _print_rows(self, rows):
-    #     flat = []
-    #     for row in rows:
-    #         row.append("\n")
-    #         flat.extend(row)
-    #     print("".join(flat))
-
-
     def __str__(self):
         map_string = []
         for row in range(self.ROWS):
@@ -124,43 +87,6 @@ class Map:
             map_string.append("\n")
         return "".join(map_string)
 
-
-class Simulation:
-
-    def __init__(self, map):
-        self.map = map
-        self.timestep = 0
-
-    def run(self):
-        self.wave = waves.wave.EasyWave()
-        with reprint.output(output_type="dict", interval=0) as output_dict:
-            while True:
-                self.timestep += 1
-                self.update()
-                self.wave.release(self.map)
-                self.wave.update()
-                rows = self.map.get_rows()
-                for i, row in enumerate(rows):
-                    output_dict[i] = "{}".format("".join(row))
-                sleep(0.1)
-
-
-    def update(self):
-        for _, field in self.map.wall.items():
-            if field.objects:
-                tower = field.objects[0]
-                tower.update()
-        for monster in self.map.monsters:
-            monster.update()
-            if monster.is_alive:
-                try:
-                    monster.move()
-                except PassedTheGateError:
-                    # remove life
-                    self.map.remove_monster(monster)
-            else:
-                # add points for monster
-                self.map.remove_monster(monster)
 
 
 if __name__ == '__main__':
@@ -181,5 +107,5 @@ if __name__ == '__main__':
     map.build_tower(tower, (2, 11))
     # map.add_monster(monster1)
     # map.add_monster(monster2)
-    simulation = Simulation(map)
-    simulation.run()
+    # simulation = Simulation(map)
+    # simulation.run()
