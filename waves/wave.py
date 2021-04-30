@@ -11,18 +11,17 @@ class Wave:
     def fill(self):
         raise NotImplementedError
 
-    def release(self, map):
+    def release(self, map_):
         if self.lobby and self.ready:
             monster = self.lobby.pop()
-            map.add_monster(monster)
+            map_.add_monster(monster)
             self.ready = False
 
     def get_lobby_time(self):
         if self.lobby:
             monster = self.lobby[-1]
             return monster.move_step
-        else:
-            return 0
+        return 0
 
     def update(self):
         self.time_count += 1

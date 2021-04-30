@@ -46,6 +46,6 @@ class Ranger(Tower):
     price=50
 
 
-tower_dict = {"A":Archer,
+tower_dict = {"A": Archer,
               "C": Cannon,
               "R": Ranger}

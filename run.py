@@ -1,10 +1,13 @@
+import os
+from time import sleep
+
+import reprint
+
 from fields.map import Map
 from towers.tower import tower_dict
-from waves.wave import EasyWave, HeavyWave
-import reprint
-from time import sleep
 from waves.monsters import PassedTheGateError
-import os
+from waves.wave import EasyWave, HeavyWave
+
 
 class Game:
     def __init__(self):
@@ -35,17 +38,16 @@ class Game:
             if price > self.gold:
                 print("Not enough gold")
                 continue
-            else:
-                while True:
-                    row = int(input("Enter row number "))
-                    col = int(input("Enter col number "))
-                    try:
-                        self.map.build_tower(tower, (row, col))
-                        self.gold -= price
-                        break
-                    except ValueError:
-                        print("This field is unavailable")
-                        continue
+            while True:
+                row = int(input("Enter row number "))
+                col = int(input("Enter col number "))
+                try:
+                    self.map.build_tower(tower, (row, col))
+                    self.gold -= price
+                    break
+                except ValueError:
+                    print("This field is unavailable")
+                    continue
             print_current()
         os.system("clear")
 
@@ -103,4 +105,3 @@ class Game:
 if __name__ == '__main__':
     game = Game()
     game.run()
-

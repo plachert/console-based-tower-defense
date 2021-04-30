@@ -11,6 +11,9 @@ class Monster:
 
     def __init__(self):
         self.ready = True
+        self.path = None
+        self.path_order = None
+        self.position = None
         self.time_count = 0
 
     def put_on_path(self, path):
@@ -57,4 +60,3 @@ class Tank(Monster):
     hp = 200
     gold = 200
     move_step = 10
-
