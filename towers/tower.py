@@ -5,6 +5,7 @@ class Tower:
     price=30
     force=10
     reload=10
+    range_=2
 
     def __init__(self):
         self.ready = True
@@ -23,8 +24,28 @@ class Tower:
             self.ready = True
             self.time_count = 0
 
-class CannonTower(Tower):
+class Archer(Tower):
+    marker="A"
+    force=10
+    reload=2
+    price=10
+    range_=5
+
+class Cannon(Tower):
     marker="C"
+    force=50
+    range_=2
+    reload=15
     price=30
 
-tower_dict = {"C": CannonTower}
+class Ranger(Tower):
+    marker="R"
+    range_=30
+    force=20
+    reload=20
+    price=50
+
+
+tower_dict = {"A":Archer,
+              "C": Cannon,
+              "R": Ranger}

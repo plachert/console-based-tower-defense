@@ -1,6 +1,6 @@
 from fields.map import Map
 from towers.tower import tower_dict
-from waves.wave import EasyWave
+from waves.wave import EasyWave, HeavyWave
 import reprint
 from time import sleep
 from waves.monsters import PassedTheGateError
@@ -8,11 +8,11 @@ import os
 
 class Game:
     def __init__(self):
-        self.gold = 1000
+        self.gold = 100
         self.lives = 30
         self.points = 0
         self.map = Map()
-        self.waves = [EasyWave()]
+        self.waves = [EasyWave(), HeavyWave()]
 
     def build(self):
         def print_current():
@@ -23,6 +23,8 @@ class Game:
         print("Buliding phase")
         while True:
             print_current()
+            if input("Want to buy? y/n ") == "n":
+                break
             tower_selection = input("Enter tower name ")
             try:
                 tower = tower_dict[tower_selection.upper()]()
@@ -45,8 +47,6 @@ class Game:
                         print("This field is unavailable")
                         continue
             print_current()
-            if input("Want to buy more? y/n ") == "n":
-                break
         os.system("clear")
 
     def fight(self):

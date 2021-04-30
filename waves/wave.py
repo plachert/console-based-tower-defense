@@ -1,4 +1,4 @@
-from waves.monsters import FastMonster
+from waves.monsters import Speedy, Tank
 
 class Wave:
 
@@ -34,4 +34,10 @@ class EasyWave(Wave):
 
     def fill(self):
         for _ in range(20):
-            self.lobby.append(FastMonster())
+            self.lobby.append(Speedy())
+
+class HeavyWave(Wave):
+
+    def fill(self):
+        for _ in range(5):
+            self.lobby.append(Tank())

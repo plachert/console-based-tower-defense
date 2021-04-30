@@ -3,7 +3,7 @@ class PassedTheGateError(Exception):
     pass
 
 class Monster:
-    marker="M"
+    marker="m"
     move_step=1
     hp=20
     points=10
@@ -45,14 +45,16 @@ class Monster:
             self.ready = True
             self.time_count = 0
 
-class SlowMonster(Monster):
-    marker = "S"
-    hp = 10000
-    gold = 100
-    move_step = 3 # speed
+class Speedy(Monster):
+    marker="s"
+    hp=20
+    gold=100
+    points=5
+    move_step = 1 # speed
 
-class FastMonster(Monster):
-    marker = "F"
-    hp = 20
+class Tank(Monster):
+    marker = "t"
+    hp = 200
     gold = 200
-    move_step = 1
+    move_step = 10
+

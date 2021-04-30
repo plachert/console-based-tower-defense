@@ -3,7 +3,7 @@ from typing import Tuple
 
 from fields.field import PathField, WallField
 from towers.tower import Tower
-from waves.monsters import SlowMonster, FastMonster, Monster
+from waves.monsters import Monster
 
 
 class Map:
@@ -24,7 +24,7 @@ class Map:
         self.wall[position].add_object(tower)
         for pos in self.path_order:
             field = self.path[pos]
-            if field.taxi_distance(self.wall[position]) <= 2:
+            if field.taxi_distance(self.wall[position]) <= tower.range_:
                 field.add_observer(self.wall[position])
 
     def add_monster(self, monster: Monster):
@@ -75,37 +75,3 @@ class Map:
             print("".join(row))
 
 
-    def __str__(self):
-        map_string = []
-        for row in range(self.ROWS):
-            for col in range(self.COLUMNS):
-                if (row, col) in self.wall.keys():
-                    val = self.wall[(row, col)]
-                else:
-                    val = self.path[(row, col)]
-                map_string.append(val.__str__())
-            map_string.append("\n")
-        return "".join(map_string)
-
-
-
-if __name__ == '__main__':
-    map = Map()
-    tower = Tower()
-    monster1 = SlowMonster()
-    monster2 = FastMonster()
-    # map.build_tower(tower, (0, 7))
-    map.build_tower(tower, (2, 2))
-    map.build_tower(tower, (2, 3))
-    map.build_tower(tower, (2, 4))
-    map.build_tower(tower, (2, 5))
-    map.build_tower(tower, (2, 6))
-    map.build_tower(tower, (2, 7))
-    map.build_tower(tower, (2, 8))
-    map.build_tower(tower, (2, 9))
-    map.build_tower(tower, (2, 10))
-    map.build_tower(tower, (2, 11))
-    # map.add_monster(monster1)
-    # map.add_monster(monster2)
-    # simulation = Simulation(map)
-    # simulation.run()
