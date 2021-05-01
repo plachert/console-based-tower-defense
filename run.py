@@ -1,10 +1,9 @@
 import os
-from time import sleep
 
 import reprint
 
 from fields.map import Map
-from towers.tower import tower_dict
+from towers.tower import tower_dict, get_tower_info
 from waves.monsters import PassedTheGateError
 from waves.wave import EasyWave, HeavyWave
 
@@ -20,10 +19,11 @@ class Game:
     def build(self):
         def print_current():
             os.system("clear")
+            print("Buliding phase")
             self.map.print_with_monits([f"Available gold: {self.gold}",
                                         f"Lives: {self.lives}",
-                                        f"Points: {self.points}"])
-        print("Buliding phase")
+                                        f"Points: {self.points}",
+                                        f"Towers price: {get_tower_info()}"])
         while True:
             print_current()
             if input("Want to buy? y/n ") == "n":
@@ -70,7 +70,6 @@ class Game:
                 rows[1] += f" Lives: {self.lives}"
                 for i, row in enumerate(rows):
                     output_dict[i] = "{}".format("".join(row))
-                sleep(0.1)
                 if not self.map.monsters:
                     break
                 if self.lives == 0:

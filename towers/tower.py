@@ -49,3 +49,9 @@ class Ranger(Tower):
 tower_dict = {"A": Archer,
               "C": Cannon,
               "R": Ranger}
+
+def get_tower_info():
+    pretty_dict = {}
+    for letter, tower in tower_dict.items():
+        pretty_dict[letter] = (tower.__name__, tower.price)
+    return  pretty_dict
