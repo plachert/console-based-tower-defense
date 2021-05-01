@@ -3,13 +3,17 @@ class PassedTheGateError(Exception):
     pass
 
 class Monster:
-    marker="M"
+    marker="m"
     move_step=1
     hp=20
+    points=10
     is_alive=True
 
     def __init__(self):
         self.ready = True
+        self.path = None
+        self.path_order = None
+        self.position = None
         self.time_count = 0
 
     def put_on_path(self, path):
@@ -44,12 +48,15 @@ class Monster:
             self.ready = True
             self.time_count = 0
 
-class SlowMonster(Monster):
-    marker = "S"
-    hp = 10000
-    move_step = 3 # speed
+class Speedy(Monster):
+    marker="s"
+    hp=20
+    gold=100
+    points=5
+    move_step = 1 # speed
 
-class FastMonster(Monster):
-    marker = "F"
-    hp = 20
-    move_step = 1
+class Tank(Monster):
+    marker = "t"
+    hp = 200
+    gold = 200
+    move_step = 10

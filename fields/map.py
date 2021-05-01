@@ -1,13 +1,10 @@
 from collections import OrderedDict
-from time import sleep
 from typing import Tuple
-
-import reprint
 
 from fields.field import PathField, WallField
 from towers.tower import Tower
-from waves.monsters import SlowMonster, FastMonster, Monster, PassedTheGateError
-import waves.wave
+from waves.monsters import Monster
+
 
 class Map:
     ROWS=9
@@ -27,7 +24,7 @@ class Map:
         self.wall[position].add_object(tower)
         for pos in self.path_order:
             field = self.path[pos]
-            if field.taxi_distance(self.wall[position]) <= 2:
+            if field.taxi_distance(self.wall[position]) <= tower.range_:
                 field.add_observer(self.wall[position])
 
     def add_monster(self, monster: Monster):
@@ -69,74 +66,10 @@ class Map:
             map_rows.append(row_str)
         return map_rows
 
-    def __str__(self):
-        map_string = []
-        for row in range(self.ROWS):
-            for col in range(self.COLUMNS):
-                if (row, col) in self.wall.keys():
-                    val = self.wall[(row, col)]
-                else:
-                    val = self.path[(row, col)]
-                map_string.append(val.__str__())
-            map_string.append("\n")
-        return "".join(map_string)
+    def print_with_monits(self, monits):
+        rows = self.get_rows()
+        for i, monit in enumerate(monits):
+            rows[i].append(f"   {monit}")
 
-
-class Simulation:
-
-    def __init__(self, map):
-        self.map = map
-        self.timestep = 0
-
-    def run(self):
-        self.wave = waves.wave.EasyWave()
-        with reprint.output(output_type="dict", interval=0) as output_dict:
-            while True:
-                self.timestep += 1
-                self.update()
-                self.wave.release(self.map)
-                self.wave.update()
-                rows = self.map.get_rows()
-                for i, row in enumerate(rows):
-                    output_dict[i] = "{}".format("".join(row))
-                sleep(0.1)
-
-
-    def update(self):
-        for _, field in self.map.wall.items():
-            if field.objects:
-                tower = field.objects[0]
-                tower.update()
-        for monster in self.map.monsters:
-            monster.update()
-            if monster.is_alive:
-                try:
-                    monster.move()
-                except PassedTheGateError:
-                    # remove life
-                    self.map.remove_monster(monster)
-            else:
-                # add points for monster
-                self.map.remove_monster(monster)
-
-
-if __name__ == '__main__':
-    map = Map()
-    tower = Tower()
-    monster1 = SlowMonster()
-    monster2 = FastMonster()
-    # map.build_tower(tower, (0, 7))
-    map.build_tower(tower, (2, 2))
-    map.build_tower(tower, (2, 3))
-    map.build_tower(tower, (2, 4))
-    map.build_tower(tower, (2, 5))
-    map.build_tower(tower, (2, 6))
-    map.build_tower(tower, (2, 7))
-    map.build_tower(tower, (2, 8))
-    map.build_tower(tower, (2, 9))
-    map.build_tower(tower, (2, 10))
-    map.build_tower(tower, (2, 11))
-    # map.add_monster(monster1)
-    # map.add_monster(monster2)
-    simulation = Simulation(map)
-    simulation.run()
+        for row in rows:
+            print("".join(row))
