@@ -15,7 +15,7 @@ python run.py
 The game consists of two phases: building and fight.
 
 ### Building phase
-
+![Alt Text](gifs/building_phase.gif)
 
 ### Fight
 
