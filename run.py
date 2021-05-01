@@ -86,11 +86,9 @@ class Game:
                 try:
                     monster.move()
                 except PassedTheGateError:
-                    # remove life
                     self.map.remove_monster(monster)
                     self.lives -= 1
             else:
-                # add points for monster
                 self.gold += monster.gold
                 self.points += monster.points
                 self.map.remove_monster(monster)
