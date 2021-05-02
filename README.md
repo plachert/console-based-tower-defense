@@ -10,7 +10,7 @@
     - [Monsters](#monsters)
 
 It is a simple terminal-based TD game. The game consists of two phases: building and battle. In the building phase the player
-can buy towers. Towers are marked with capital letters (see towers). When the building phase is over the battle starts. Monsters are placed on the map and move along the path (dotted line). When a monster reaches the gate (the end of the path) life is taken from the player.
+can buy towers. Towers are marked with capital letters (see [Towers](#towers)). When the building phase is over the battle starts. Monsters are placed on the map and move along the path (dotted line). When a monster reaches the gate (the end of the path) life is taken from the player.
 The game is over when all the lives are lost (defeat) or when all the waves are over (win).
 
 ## Installation
