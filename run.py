@@ -49,7 +49,7 @@ class Game:
                     print("This field is unavailable")
                     continue
             print_current()
-        os.system("clear")
+        input("Press enter to start the battle")
 
     def fight(self):
         def get_current_status():
@@ -96,6 +96,7 @@ class Game:
     def run(self):
         while self.waves:
             self.build()
+            os.system("clear")
             self.fight()
 
 
