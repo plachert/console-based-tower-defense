@@ -28,7 +28,8 @@ The game consists of two phases: building and fight.
 - Ranger (R): Wide range and moderate attack.
 
 ### Fight
-
+![Alt Text](gifs/battle.gif)
+Building phase was disabled for this gif. Calling "python run.py" will normally start the game with the building phase.
 #### Monsters
 
 - Speedy (s): fast, low hp
